@@ -1,24 +1,44 @@
-import { useState } from 'react';
+import { useState, useEffect } from "react";
+import Wordlist from "./component/Wordslist";
 
 function App() {
+  const [word, setWord] = useState("");
+  const [data, setData] = useState([]);
 
-  const [word, setWord] = useState('');
+  // useEffect(() => {
+  //   fetch('https://api.datamuse.com/words?rel_syn=' +word)
+  //     .then((response) => response.json())
+  //     .then(setData);
+  // }, []);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setWord(e.target.word_input.value)
-  }
+    await fetch("https://api.datamuse.com/words?rel_syn=" + word)
+      .then((response) => response.json())
+      .then(setData);
+  };
 
   return (
     <div className="App">
-        <form onSubmit={(e) => handleSubmit(e)}>
-          <label htmlFor='word_input'> Input a word
-            <input type='text' id='word_input' />
-          </label>
-          <input type='submit' value='Submit' />
-        </form>
+      <form onSubmit={handleSubmit}>
+        <label htmlFor="word_input">
+          {" "}
+          Input a word
+          <input
+            type="text"
+            id="word_input"
+            value={word}
+            onChange={(e) => setWord(e.target.value)}
+          />
+        </label>
+        <input type="submit" value="Submit" />
+      </form>
 
-        <p> { word } </p>
+      <ul>
+        {data.map((element, index) => (
+          <li key={index}> {element.word} </li>
+        ))}
+      </ul>
     </div>
   );
 }
