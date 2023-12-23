@@ -5,12 +5,6 @@ function App() {
   const [word, setWord] = useState("");
   const [data, setData] = useState([]);
 
-  // useEffect(() => {
-  //   fetch('https://api.datamuse.com/words?rel_syn=' +word)
-  //     .then((response) => response.json())
-  //     .then(setData);
-  // }, []);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     await fetch("https://api.datamuse.com/words?rel_syn=" + word)
@@ -34,10 +28,14 @@ function App() {
         <input type="submit" value="Submit" />
       </form>
 
-      <ul>
-        {data.map((element, index) => (
-          <li key={index}> {element.word} </li>
-        ))}
+      <ul style={{ listStyle: "none" }}>
+        {data.length == 0 ? (
+          <p> Display an error message </p>
+        ) : (
+          data.map((element, index) => (
+            <Wordlist key={index} element={element.word} />
+          ))
+        )}
       </ul>
     </div>
   );

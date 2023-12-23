@@ -1,5 +1,5 @@
 function Wordlist(props) {
-  return <p> Hello World </p>;
+  return <li> {props.element} </li>;
 }
 
 export default Wordlist;
